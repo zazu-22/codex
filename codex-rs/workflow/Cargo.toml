@@ -1,0 +1,22 @@
+[package]
+name = "codex-workflow"
+version = "0.0.0"
+edition = "2024"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+anyhow = "1"
+chrono = { version = "0.4", features = ["serde"] }
+codex-common = { path = "../common", features = ["cli"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+textwrap = "0.16"
+thiserror = "2"
+toml = "0.9"
+tokio = { version = "1", features = ["process", "rt", "macros"], default-features = false }
+
+[dev-dependencies]
+tempfile = { workspace = true }

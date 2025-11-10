@@ -35,6 +35,7 @@ codex-responses-api-proxy = { workspace = true }
 codex-rmcp-client = { workspace = true }
 codex-stdio-to-uds = { workspace = true }
 codex-tui = { workspace = true }
+codex-workflow = { path = "../workflow" }
 ctor = { workspace = true }
 owo-colors = { workspace = true }
 serde_json = { workspace = true }

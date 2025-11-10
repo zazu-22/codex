@@ -26,9 +26,11 @@ use std::path::PathBuf;
 use supports_color::Stream;
 
 mod mcp_cmd;
+mod workflow_cmd;
 mod wsl_paths;
 
 use crate::mcp_cmd::McpCli;
+use crate::workflow_cmd::WorkflowCli;
 use crate::wsl_paths::normalize_for_wsl;
 use codex_core::config::Config;
 use codex_core::config::ConfigOverrides;
@@ -115,6 +117,9 @@ enum Subcommand {
 
     /// Inspect feature flags.
     Features(FeaturesCli),
+
+    /// Experimental multi-ticket workflow orchestration helpers.
+    Workflow(WorkflowCli),
 }
 
 #[derive(Debug, Parser)]
@@ -543,6 +548,9 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
                 }
             }
         },
+        Some(Subcommand::Workflow(workflow_cli)) => {
+            workflow_cmd::execute(workflow_cli, root_config_overrides.clone()).await?;
+        }
     }
 
     Ok(())
@@ -550,7 +558,7 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
 
 /// Prepend root-level overrides so they have lower precedence than
 /// CLI-specific ones specified after the subcommand (if any).
-fn prepend_config_flags(
+pub(crate) fn prepend_config_flags(
     subcommand_config_overrides: &mut CliConfigOverrides,
     cli_config_overrides: CliConfigOverrides,
 ) {
